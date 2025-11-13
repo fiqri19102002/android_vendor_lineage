@@ -293,9 +293,9 @@ PRODUCT_EXTRA_RECOVERY_KEYS += \
 
 ifeq ($(LINEAGE_BUILD),true)
 include vendor/lineage/config/version.mk
-endif
 
 -include vendor/lineage-priv/keys/keys.mk
+endif
 
 -include $(WORKSPACE)/build_env/image-auto-bits.mk
 -include vendor/lineage/config/partner_gms.mk
