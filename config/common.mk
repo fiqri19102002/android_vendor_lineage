@@ -46,11 +46,15 @@ endif
 # Backup Tool
 PRODUCT_COPY_FILES += \
     vendor/lineage/prebuilt/common/bin/backuptool.sh:install/bin/backuptool.sh \
-    vendor/lineage/prebuilt/common/bin/backuptool.functions:install/bin/backuptool.functions \
+    vendor/lineage/prebuilt/common/bin/backuptool.functions:install/bin/backuptool.functions
+
+ifeq ($(LINEAGE_BUILD),true)
+PRODUCT_COPY_FILES += \
     vendor/lineage/prebuilt/common/bin/50-lineage.sh:$(TARGET_COPY_OUT_SYSTEM)/addon.d/50-lineage.sh
 
 PRODUCT_ARTIFACT_PATH_REQUIREMENT_ALLOWED_LIST += \
     system/addon.d/50-lineage.sh
+endif
 
 ifneq ($(strip $(AB_OTA_PARTITIONS) $(AB_OTA_POSTINSTALL_CONFIG)),)
 PRODUCT_COPY_FILES += \
@@ -141,6 +145,10 @@ PRODUCT_PACKAGES += \
     bootanimation-dark.zip
 endif
 
+# Lineage interfaces
+PRODUCT_PACKAGES += \
+    framework_compatibility_matrix.lineage.xml
+
 # Lineage packages
 ifeq ($(LINEAGE_BUILD),true)
 ifeq ($(PRODUCT_IS_ATV),)
@@ -163,10 +171,6 @@ PRODUCT_COPY_FILES += \
     vendor/lineage/prebuilt/common/etc/init/init.lineage-updater.rc:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/init/init.lineage-updater.rc
 endif
 
-# Config
-PRODUCT_PACKAGES += \
-    SimpleSettingsConfig
-
 # Extra tools in Lineage
 PRODUCT_PACKAGES += \
     bash \
@@ -183,7 +187,8 @@ PRODUCT_PACKAGES += \
 PRODUCT_ARTIFACT_PATH_REQUIREMENT_ALLOWED_LIST += \
     system/bin/curl \
     system/bin/getcap \
-    system/bin/setcap
+    system/bin/setcap \
+    system/%/libzstd.so
 
 # Filesystems tools
 PRODUCT_PACKAGES += \
@@ -285,8 +290,6 @@ CUSTOM_LOCALES += \
 
 PRODUCT_ENFORCE_RRO_EXCLUDED_OVERLAYS += vendor/crowdin/overlay
 PRODUCT_PACKAGE_OVERLAYS += vendor/crowdin/overlay
-
-DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE += vendor/lineage/config/device_framework_matrix.xml
 
 PRODUCT_EXTRA_RECOVERY_KEYS += \
     vendor/lineage/build/target/product/security/lineage
